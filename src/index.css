@@ -1,11 +1,15 @@
 :root {
-  --COLOR-GRAY: '#333333';
-  --COLOR-GRAY-DARK: '#222222';
-  --COLOR-GRAY-LIGHT: '#CCCCCC';
-  --COLOR-ONGOING: '#98C1D9';
-  --COLOR-DONE: '#EE6C4D';
+  --COLOR-GRAY: #ffffff;
+  --COLOR-GRAY-DARK: #222222;
+  --COLOR-GRAY-LIGHT: #cccccc;
+  --COLOR-ONGOING: #98c1d9;
+  --COLOR-DONE: #ee6c4d;
 }
 
 body {
   margin: 0;
+}
+
+* {
+  box-sizing: border-box;
 }
