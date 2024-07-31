@@ -1,15 +1,15 @@
-export type TaskType = {
+type TaskType = {
   title: string;
   state: 'PLANNED' | 'ONGOING' | 'DONE';
 };
 
-export interface TaskState {
+interface TaskState {
   tasks: TaskType[];
 }
 
 import { create } from 'zustand';
 
-export const useTaskStore = create<TaskState>(() => ({
+const useTaskStore = create<TaskState>(() => ({
   tasks: [
     {
       title: 'Test123',
@@ -25,3 +25,7 @@ export const useTaskStore = create<TaskState>(() => ({
     },
   ],
 }));
+
+export const useTasks = () => useTaskStore((state) => state.tasks);
+export const useTasksByState = (state: 'PLANNED' | 'ONGOING' | 'DONE') =>
+  useTaskStore((store) => store.tasks.filter((task) => task.state === state));
