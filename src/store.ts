@@ -1,15 +1,18 @@
-type TaskType = {
+export type TaskState = 'PLANNED' | 'ONGOING' | 'DONE';
+
+export type TaskType = {
   title: string;
-  state: 'PLANNED' | 'ONGOING' | 'DONE';
+  state: TaskState;
 };
 
-interface TaskState {
+interface TasksState {
   tasks: TaskType[];
+  actions: { addTask: (title: string, state: TaskState) => void };
 }
 
 import { create } from 'zustand';
 
-const useTaskStore = create<TaskState>(() => ({
+const useTaskStore = create<TasksState>((set) => ({
   tasks: [
     {
       title: 'Test123',
@@ -24,8 +27,13 @@ const useTaskStore = create<TaskState>(() => ({
       state: 'DONE',
     },
   ],
+  actions: {
+    addTask: (title, state) =>
+      set((store) => ({ tasks: [...store.tasks, { title, state }] })),
+  },
 }));
 
 export const useTasks = () => useTaskStore((state) => state.tasks);
 export const useTasksByState = (state: 'PLANNED' | 'ONGOING' | 'DONE') =>
   useTaskStore((store) => store.tasks.filter((task) => task.state === state));
+export const useTasksActions = () => useTaskStore((state) => state.actions);
