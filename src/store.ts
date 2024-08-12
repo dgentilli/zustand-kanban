@@ -19,7 +19,7 @@ interface TasksState {
   };
 }
 
-const useTaskStore = create<TasksState>()(
+export const useTaskStore = create<TasksState>()(
   persist(
     devtools(
       (set) => ({
