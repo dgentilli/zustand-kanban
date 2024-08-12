@@ -23,20 +23,7 @@ const useTaskStore = create<TasksState>()(
   persist(
     devtools(
       (set) => ({
-        tasks: [
-          {
-            title: 'Test123',
-            state: 'PLANNED',
-          },
-          {
-            title: 'Test456',
-            state: 'ONGOING',
-          },
-          {
-            title: 'Test789',
-            state: 'DONE',
-          },
-        ],
+        tasks: [],
         draggedTask: undefined,
         actions: {
           addTask: (title, state) =>
