@@ -8,10 +8,10 @@ interface Props {
 }
 
 const Task = ({ title, status }: Props) => {
-  const { deleteTask } = useTasksActions();
+  const { deleteTask, dragTask } = useTasksActions();
 
   return (
-    <div className='task'>
+    <div className='task' draggable onDragStart={() => dragTask(title)}>
       <div>{title}</div>
       <div className='bottomWrapper'>
         <button className='deleteButton' onClick={() => deleteTask(title)}>

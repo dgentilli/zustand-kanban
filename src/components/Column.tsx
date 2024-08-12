@@ -1,11 +1,12 @@
 import './Column.css';
-import { useTasksActions, useTasksByState } from '../store';
+import { useDraggedTask, useTasksActions, useTasksByState } from '../store';
 import Task from './Task';
 import { useState } from 'react';
 
 const Column = ({ state }: { state: 'PLANNED' | 'ONGOING' | 'DONE' }) => {
   const tasks = useTasksByState(state);
-  const { addTask } = useTasksActions();
+  const draggedTask = useDraggedTask();
+  const { addTask, dragTask, dropTask } = useTasksActions();
   const [newTaskTitle, setNewTaskTitle] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -17,7 +18,16 @@ const Column = ({ state }: { state: 'PLANNED' | 'ONGOING' | 'DONE' }) => {
   };
 
   return (
-    <div className='column'>
+    <div
+      className='column'
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e) => {
+        console.log('drop', e);
+        dropTask(draggedTask as string, state);
+        // Then set the dragged task back to undefined
+        dragTask(undefined);
+      }}
+    >
       <div className='titleWrapper'>
         <button className='button' onClick={() => setIsModalOpen(true)}>
           Add
