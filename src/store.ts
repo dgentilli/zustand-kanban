@@ -1,4 +1,6 @@
-import { devtools } from 'zustand/middleware';
+import { create } from 'zustand';
+import { devtools, persist } from 'zustand/middleware';
+
 export type TaskState = 'PLANNED' | 'ONGOING' | 'DONE';
 
 export type TaskType = {
@@ -17,41 +19,60 @@ interface TasksState {
   };
 }
 
-import { create } from 'zustand';
-
 const useTaskStore = create<TasksState>()(
-  devtools((set) => ({
-    tasks: [
-      {
-        title: 'Test123',
-        state: 'PLANNED',
-      },
-      {
-        title: 'Test456',
-        state: 'ONGOING',
-      },
-      {
-        title: 'Test789',
-        state: 'DONE',
-      },
-    ],
-    draggedTask: undefined,
-    actions: {
-      addTask: (title, state) =>
-        set((store) => ({ tasks: [...store.tasks, { title, state }] })),
-      deleteTask: (title) =>
-        set((store) => ({
-          tasks: store.tasks.filter((task) => task.title !== title),
-        })),
-      dragTask: (title) => set({ draggedTask: title }),
-      dropTask: (title, state) =>
-        set((store) => ({
-          tasks: store.tasks.map((task) =>
-            task.title === title ? { title, state } : task
-          ),
-        })),
-    },
-  }))
+  persist(
+    devtools(
+      (set) => ({
+        tasks: [
+          {
+            title: 'Test123',
+            state: 'PLANNED',
+          },
+          {
+            title: 'Test456',
+            state: 'ONGOING',
+          },
+          {
+            title: 'Test789',
+            state: 'DONE',
+          },
+        ],
+        draggedTask: undefined,
+        actions: {
+          addTask: (title, state) =>
+            set(
+              (store) => ({ tasks: [...store.tasks, { title, state }] }),
+              false,
+              'addTask'
+            ),
+          deleteTask: (title) =>
+            set(
+              (store) => ({
+                tasks: store.tasks.filter((task) => task.title !== title),
+              }),
+              false,
+              'deleteTask'
+            ),
+          dragTask: (title) => set({ draggedTask: title }, false, 'dragTask'),
+          dropTask: (title, state) =>
+            set(
+              (store) => ({
+                tasks: store.tasks.map((task) =>
+                  task.title === title ? { title, state } : task
+                ),
+              }),
+              false,
+              'dropTask'
+            ),
+        },
+      }),
+      { name: 'Task Store' }
+    ),
+    {
+      name: 'kanban',
+      partialize: (state) => ({ tasks: state.tasks }),
+    }
+  )
 );
 
 export const useTasks = () => useTaskStore((state) => state.tasks);
