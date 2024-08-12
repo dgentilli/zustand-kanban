@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import './Task.css';
+import { useTasksActions } from '../store';
 
 interface Props {
   title: string;
@@ -7,11 +8,15 @@ interface Props {
 }
 
 const Task = ({ title, status }: Props) => {
+  const { deleteTask } = useTasksActions();
+
   return (
     <div className='task'>
       <div>{title}</div>
       <div className='bottomWrapper'>
-        <div></div>
+        <button className='deleteButton' onClick={() => deleteTask(title)}>
+          Delete
+        </button>
         <div className={classNames('status', status)}>{status}</div>
       </div>
     </div>

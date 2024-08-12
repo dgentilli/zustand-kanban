@@ -16,9 +16,11 @@
 }
 
 .status {
+  display: flex;
+  align-items: center;
   font-size: small;
   background-color: var(--COLOR-GRAY-LIGHT);
-  padding: 0.25rem;
+  padding: 0.5rem;
   border-radius: 0.5rem;
 }
 
@@ -32,4 +34,16 @@
 
 .DONE {
   background-color: var(--COLOR-DONE);
+}
+
+.deleteButton {
+  all: unset;
+  background-color: rgb(228, 63, 63);
+  color: var(--COLOR-GRAY);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.deleteButton:hover {
+  cursor: pointer;
 }

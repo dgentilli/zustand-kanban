@@ -7,7 +7,10 @@ export type TaskType = {
 
 interface TasksState {
   tasks: TaskType[];
-  actions: { addTask: (title: string, state: TaskState) => void };
+  actions: {
+    addTask: (title: string, state: TaskState) => void;
+    deleteTask: (title: string) => void;
+  };
 }
 
 import { create } from 'zustand';
@@ -30,6 +33,10 @@ const useTaskStore = create<TasksState>((set) => ({
   actions: {
     addTask: (title, state) =>
       set((store) => ({ tasks: [...store.tasks, { title, state }] })),
+    deleteTask: (title) =>
+      set((store) => ({
+        tasks: store.tasks.filter((task) => task.title !== title),
+      })),
   },
 }));
 
